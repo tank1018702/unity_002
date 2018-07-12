@@ -241,12 +241,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BallTest.cs" />
+    <Compile Include="Assets\Ball.cs" />
+    <Compile Include="Assets\ChaseBallCam.cs" />
+    <Compile Include="Assets\Circle.cs" />
+    <Compile Include="Assets\CopyData.cs" />
     <Compile Include="Assets\CubeInfo.cs" />
+    <Compile Include="Assets\GameMode.cs" />
+    <Compile Include="Assets\InputLogic.cs" />
     <Compile Include="Assets\MeshCreater.cs" />
     <Compile Include="Assets\TestDisk.cs" />
     <Compile Include="Assets\TestMesh.cs" />
     <Compile Include="Assets\TestMesh2.cs" />
+    <Compile Include="Assets\TestMesh3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -26,7 +26,7 @@ public class TestDisk : MonoBehaviour
     {
         var arcs = new List<float>();
         // 按比例随机，0代表空的，1代表整圆
-        float r = Random.Range(0.1f, 0.9f);
+        float r = Random.Range(0.9f, 1.0f);
         r *= 2 * Mathf.PI;
 
         arcs.Add(0);
@@ -132,18 +132,23 @@ public class TestDisk : MonoBehaviour
 
     IEnumerator SequenceTest()
     {
-        for (int i = 0; i < MeshFilter.mesh.triangles.Length; i += 3)
-        {          
-            Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 1]], Color.red, 100f);
+        //for (int i = 0; i < MeshFilter.mesh.triangles.Length; i += 3)
+        //{          
+        //    Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 1]], Color.red, 100f);
 
-            yield return new WaitForSeconds(0.2f);
-            Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 1]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 2]], Color.yellow, 100f);
+        //    yield return new WaitForSeconds(0.2f);
+        //    Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 1]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 2]], Color.yellow, 100f);
 
-            yield return new WaitForSeconds(0.2f);
-            Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 2]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i]], Color.blue, 100f);
+        //    yield return new WaitForSeconds(0.2f);
+        //    Debug.DrawLine(MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i + 2]], MeshFilter.mesh.vertices[MeshFilter.mesh.triangles[i]], Color.blue, 100f);
 
-            yield return new WaitForSeconds(0.2f);
+        //    yield return new WaitForSeconds(0.2f);
 
+        //}
+        for (int i = 0; i <MeshFilter. mesh.vertices.Length; i++)
+        {
+            Debug.DrawRay(MeshFilter.mesh. vertices[i],MeshFilter. mesh.normals[i], Color.black, 1000f);
+            yield return new WaitForSeconds(Time.deltaTime);
         }
     }
 }

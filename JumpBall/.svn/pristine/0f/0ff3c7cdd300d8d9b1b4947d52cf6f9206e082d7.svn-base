@@ -1,0 +1,111 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameMode : MonoBehaviour {
+
+    public Pie prefabPie;
+    public Transform pieRoot;
+    public float gap = 8.0f;
+
+    LinkedList<Pie> pieQueue;
+    LinkedListNode<Pie> curNode;
+    float lowestPieY;
+
+    Transform cam;
+    Transform pillar;
+    BouncingBall ball;
+    Transform canvas;
+
+    public GameObject prefabNumber;
+
+    // gameplay
+    int totalScore = 0;
+    Text totalScoreText;
+    int combo;
+    float lastAddScoreTime;
+
+    Pie GenNewPie()
+    {
+        Pie pie = Instantiate(prefabPie, pieRoot);
+        pie.Init();
+        return pie;
+    }
+
+    Pie GetNextPie()
+    {
+        // 让链表循环使用的算法
+        LinkedListNode<Pie> next = curNode.Next;
+        if (next == null)
+        {
+            // 如果达到了结尾就回到开头
+            next = pieQueue.First;
+        }
+        // 如果盘子已经很高了，说明可以拿来复用
+        if (next.Value.gameObject.transform.position.y > cam.position.y + 2 * gap)
+        {
+            next.Value.gameObject.SetActive(false);
+        }
+
+        if (!next.Value.gameObject.activeInHierarchy)
+        {
+            curNode = next;
+            curNode.Value.gameObject.SetActive(true);
+        }
+        else
+        {
+            curNode = pieQueue.AddBefore(next, GenNewPie());
+        }
+
+        return curNode.Value;
+    }
+    
+	void Start () {
+        pieQueue = new LinkedList<Pie>();
+
+        pieQueue.AddLast(GenNewPie());
+        curNode = pieQueue.Last;
+
+        cam = Camera.main.transform;
+        pillar = GameObject.Find("Pillar").transform;
+        ball = GameObject.Find("Ball").GetComponent<BouncingBall>();
+        canvas = GameObject.Find("Canvas").transform;
+        totalScoreText = GameObject.Find("FinalScore").GetComponent<Text>();
+    }
+
+
+    void AddScore()
+    {
+        if (ball.lastBounceTime > lastAddScoreTime)
+        {
+            combo = 1;
+        }
+        else
+        {
+            combo++;
+            if (combo > 9) { combo = 9; }
+        }
+        lastAddScoreTime = Time.time;
+
+        var numObj = Instantiate(prefabNumber, canvas);
+        numObj.GetComponent<ScoreAnim>().SetNumber(combo);
+        totalScore += combo;
+        totalScoreText.text = string.Format("Score:{0}", totalScore);
+    }
+	
+	void Update () {
+		while (lowestPieY > cam.position.y - 1.5f * gap)
+        {
+            var pie = GetNextPie();
+            pie.transform.position = new Vector3(0, lowestPieY - gap);
+            pie.GeneratePieByLevel(0);
+            lowestPieY = pie.transform.position.y;
+
+            AddScore();
+
+        }
+
+        pillar.position = new Vector3(pillar.position.x, cam.position.y, pillar.position.z);
+	}
+}

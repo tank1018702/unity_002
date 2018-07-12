@@ -24,6 +24,8 @@ public class TestMesh2 : MonoBehaviour
 
     public float Height = 0.2f;
 
+    int[] a;
+
     void Start ()
     {
         meshFilter = transform.GetComponent<MeshFilter>();
@@ -31,6 +33,7 @@ public class TestMesh2 : MonoBehaviour
         meshCollider = transform.GetComponent<MeshCollider>();
         SingleOne();
         StartCoroutine(test());
+        
     }
 	
 	
@@ -41,6 +44,7 @@ public class TestMesh2 : MonoBehaviour
 
     void SingleOne()
     {
+
         float EachAngle;
         EachAngle = 2 * Mathf.PI / details;
 
@@ -62,6 +66,7 @@ public class TestMesh2 : MonoBehaviour
             vertices_f.Add(down_inside); vertices_s.Add(down_inside);
             vertices_f.Add(down_outside); vertices_s.Add(down_outside);
             vertices_f.Add(up_outside); vertices_s.Add(up_outside);
+
             //uv坐标
             uv_f.Add(new Vector2(0, 1));uv_s.Add(new Vector2(1, 1));
             uv_f.Add(new Vector2(0, 0));uv_s.Add(new Vector2(1, 0));
@@ -119,20 +124,20 @@ public class TestMesh2 : MonoBehaviour
                 triangles_f.Add(i); triangles_f.Add(i + 3); triangles_f.Add(0);
                 triangles_s.Add(i); triangles_s.Add(0); triangles_s.Add(1);
 
-                normals_f.Add(Vector3.Cross((vertices_f[i + 3] - vertices_f[i ]), (vertices_f[0] - vertices_f[i ])).normalized);
-                normals_s.Add(Vector3.Cross((vertices_s[0] - vertices_s[i ]), (vertices_s[1] - vertices_s[i])).normalized);
+                normals_f.Add(Vector3.Cross((vertices_f[i + 3] - vertices_f[i]), (vertices_f[0] - vertices_f[i])).normalized);
+                normals_s.Add(Vector3.Cross((vertices_s[0] - vertices_s[i]), (vertices_s[1] - vertices_s[i])).normalized);
 
                 //1
-                triangles_f.Add(i+1); triangles_f.Add(i); triangles_f.Add(1);
-                triangles_s.Add(i+1); triangles_s.Add(1); triangles_s.Add(2);
+                triangles_f.Add(i + 1); triangles_f.Add(i); triangles_f.Add(1);
+                triangles_s.Add(i + 1); triangles_s.Add(1); triangles_s.Add(2);
 
-                normals_f.Add(Vector3.Cross((vertices_f[i] - vertices_f[i+1]), (vertices_f[1] - vertices_f[i+1])).normalized);
-                normals_s.Add(Vector3.Cross((vertices_s[1] - vertices_s[i+1]), (vertices_s[2] - vertices_s[i+1])).normalized);
+                normals_f.Add(Vector3.Cross((vertices_f[i] - vertices_f[i + 1]), (vertices_f[1] - vertices_f[i + 1])).normalized);
+                normals_s.Add(Vector3.Cross((vertices_s[1] - vertices_s[i + 1]), (vertices_s[2] - vertices_s[i + 1])).normalized);
                 //2
-                triangles_f.Add(i + 2); triangles_f.Add(i+1); triangles_f.Add(2);
+                triangles_f.Add(i + 2); triangles_f.Add(i + 1); triangles_f.Add(2);
                 triangles_s.Add(i + 2); triangles_s.Add(2); triangles_s.Add(3);
 
-                normals_f.Add(Vector3.Cross((vertices_f[i+1] - vertices_f[i + 2]), (vertices_f[2] - vertices_f[i + 2])).normalized);
+                normals_f.Add(Vector3.Cross((vertices_f[i + 1] - vertices_f[i + 2]), (vertices_f[2] - vertices_f[i + 2])).normalized);
                 normals_s.Add(Vector3.Cross((vertices_s[2] - vertices_s[i + 2]), (vertices_s[3] - vertices_s[i + 2])).normalized);
 
                 //3
@@ -177,11 +182,10 @@ public class TestMesh2 : MonoBehaviour
     }
     IEnumerator test()
     {
-        int j = 0;
+        //int j = 0;
 
         for (int i = 0; i < mesh.triangles.Length; i += 3)
         {
-
             //Debug.Log(j);
             Debug.DrawLine(mesh.vertices[mesh.triangles[i]], mesh.vertices[mesh.triangles[i + 1]], Color.red, 100f);
 
@@ -191,12 +195,32 @@ public class TestMesh2 : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
             Debug.DrawLine(mesh.vertices[mesh.triangles[i + 2]], mesh.vertices[mesh.triangles[i]], Color.blue, 100f);
 
-            yield return new WaitForSeconds(Time.deltaTime);
-
-            //Debug.DrawRay(mesh.vertices[j], mesh.normals[j], Color.black, 1000f);
-            
-            j++;
+            yield return new WaitForSeconds(Time.deltaTime);      
         }
+        //for (int i = 0; i < mesh.vertices.Length; i++)
+        //{
+        //    Debug.DrawRay(mesh.vertices[i], mesh.normals[i], Color.black, 1000f);
+        //    Debug.DrawLine(Vector3.zero, mesh.vertices[i], Color.red, 1000f);
+        //    Debug.Log(i + ":" + mesh.vertices[i]);
+        //    yield return new WaitForSeconds(Time.deltaTime);
+        //}
+        //for (int i = 0; i < mesh.triangles.Length; i += 3)
+        //{
+
+
+        //    Debug.DrawLine(mesh.uv[mesh.triangles[i]] * 2, mesh.uv[mesh.triangles[i + 1]] * 2, Color.red, 100f);
+
+        //    yield return new WaitForSeconds(Time.deltaTime);
+        //    Debug.DrawLine(mesh.uv[mesh.triangles[i + 1]] * 2, mesh.uv[mesh.triangles[i + 2]] * 2, Color.yellow, 100f);
+
+        //    yield return new WaitForSeconds(Time.deltaTime);
+        //    Debug.DrawLine(mesh.uv[mesh.triangles[i + 2]] * 2, mesh.uv[mesh.triangles[i]] * 2, Color.blue, 100f);
+
+        //    yield return new WaitForSeconds(Time.deltaTime);
+
+
+
+        //}
     }
 
 
