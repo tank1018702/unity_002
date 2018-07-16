@@ -8,7 +8,6 @@ public class Circle : MonoBehaviour
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
     MeshCollider meshCollider;
-    Rigidbody rig;
     Mesh mesh;
 
     public float OuterRadius = 1.0f;
@@ -24,19 +23,17 @@ public class Circle : MonoBehaviour
     List<Vector3> temp_vertices;
 
     Vector3 MiddleLine;
-    float CircleAngle;
-    Transform pointer;
+    public  float RealAngle;
+    Transform DropRoot;
+
+    float drop_x=0.1f;
+    float drop_y=0.3f;
+
+
+
+    WaitForSeconds deltaTime = new WaitForSeconds(0.02f);
 
     public Material[] material;
-
-    private void Update()
-    {
-        pointer.Rotate(pointer.up, CircleAngle / 2);
-        pointer.Rotate(pointer.right, 80f);
-        MiddleLine = pointer.forward;
-        pointer.forward = transform.forward;
-    }
-
 
 
     public void Init()
@@ -44,31 +41,33 @@ public class Circle : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
         meshRenderer = GetComponent<MeshRenderer>();
-        rig = GetComponent<Rigidbody>();
-        pointer = transform.GetChild(0);
-        rig.isKinematic = true;
+        DropRoot = GameObject.Find("DropCircleRoot").transform;
+
+        meshFilter.mesh.Clear();
+        meshCollider.sharedMesh = meshFilter.mesh;
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+        drop_y = 0.3f;
     }
 
-    public void RigReset()
-    {
-        rig.isKinematic = true;
-        transform.rotation = Quaternion.identity;
-    }
+  
 
 
 
     [ContextMenu("Generate")]
-    public void GenerateCircleByLevel(int level)
+    public void GenerateSingleCircle(float radian,int level)
     {
 
-        float r = Random.Range(0.3f+level*0.1f, 0.6f+level*0.1f);
-        r *= 2 * Mathf.PI;
-        GenerateCircle(r);
-        float RandomAngle= Random.Range(0, 2 * Mathf.PI * Mathf.Rad2Deg);
-        transform.Rotate(0, RandomAngle, 0);
+        //float r = Random.Range(0.3f+level*0.1f, 0.6f+level*0.1f);
+        //r *= 2 * Mathf.PI;
+        //GenerateCircle(r);
+        //float RandomAngle= Random.Range(0, 2 * Mathf.PI * Mathf.Rad2Deg);
+        //transform.Rotate(0, RandomAngle, 0);
 
-        int r2 = Random.Range(0, 6);
-        if(r2<=level)
+        //int r2 = Random.Range(0, 6);
+        
+        int M_random = Random.Range(0, 11);
+        if (M_random <= level)
         {
             transform.tag = "Obstacle";
             meshRenderer.material = material[1];
@@ -79,8 +78,8 @@ public class Circle : MonoBehaviour
             meshRenderer.material = material[0];
         }
 
-       
-        
+        GenerateCircle(radian);
+
     }
     [ContextMenu("PrintUV")]
     void PrintUV()
@@ -103,7 +102,7 @@ public class Circle : MonoBehaviour
         //计算外侧数据
         int trunc = Mathf.FloorToInt(radian / EachAngle);
 
-        CircleAngle = trunc * EachAngle * Mathf.Rad2Deg;
+        RealAngle = trunc * EachAngle * Mathf.Rad2Deg;
         for (int i = 0; i <= trunc; i++)
         {
             Vector3 v1 = new Vector3(OuterRadius * Mathf.Sin(i * EachAngle), 0, OuterRadius * Mathf.Cos(i * EachAngle));
@@ -244,18 +243,25 @@ public class Circle : MonoBehaviour
         meshCollider.sharedMesh = mesh;
 
     }
-    [ContextMenu("focetest")]
-   public void test2()
+   
+   public void Drop()
     {
         StartCoroutine(PlayDropAnim());
     }
     IEnumerator PlayDropAnim()
     {
-        rig.isKinematic = false;
-        rig.AddForce(MiddleLine * 10, ForceMode.Impulse);
-        yield return new WaitForSeconds(1f);
+        transform.SetParent(DropRoot);
+        MiddleLine = Quaternion.Euler(0, RealAngle / 2, 0) * transform.forward;
+        Debug.DrawRay(transform.position, MiddleLine, Color.red, 3f);
+
+        for (int i = 0; i < 50; i++)
+        {
+            transform.position += new Vector3(MiddleLine.x * drop_x, drop_y, MiddleLine.z * drop_x);
+
+            drop_y-=0.1f;
+            yield return deltaTime;
+        }
         gameObject.SetActive(false);
-        
     }
    
     IEnumerator test()

@@ -24,41 +24,41 @@ public class Circle : MonoBehaviour
     List<Vector3> temp_vertices;
 
     Vector3 MiddleLine;
-    float CircleAngle;
+ 
+   
     Transform pointer;
 
-  
+    public float RealAngle;
 
+    float drop_x = 0.3f;
+    float drop_y = 0.3f;
 
+    WaitForSeconds deltaTime = new WaitForSeconds(0.02f);
 
     public void Init()
     {
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
         meshRenderer = GetComponent<MeshRenderer>();
-       
 
-
-
-    }
-
-    public void RigReset()
-    {
-        rig.isKinematic = true;
+        meshFilter.mesh.Clear();
+        meshCollider.sharedMesh = meshFilter.mesh;
+        transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
     }
 
+   
 
 
     [ContextMenu("Generate")]
-    public void GenerateCircleByLevel()
+    public void GenerateCircleByLevel(float r)
     {
-        float r = Random.Range(0.1f, 0.6f);
-        r *= 2 * Mathf.PI;
+        //float r = Random.Range(0.1f, 0.6f);
+        //r *= 2 * Mathf.PI;
         GenerateCircle(r);
 
-        float RandomAngle = Random.Range(0, 2 * Mathf.PI * Mathf.Rad2Deg);
-        transform.Rotate(0, RandomAngle, 0);
+        //float RandomAngle = Random.Range(0, 2 * Mathf.PI * Mathf.Rad2Deg);
+        //transform.Rotate(0, RandomAngle, 0);
 
 
     }
@@ -83,7 +83,8 @@ public class Circle : MonoBehaviour
         //计算外侧数据
         int trunc = Mathf.FloorToInt(radian / EachAngle);
 
-        CircleAngle = trunc * EachAngle * Mathf.Rad2Deg;
+        RealAngle = trunc * EachAngle * Mathf.Rad2Deg;
+        
         for (int i = 0; i <= trunc; i++)
         {
             Vector3 v1 = new Vector3(OuterRadius * Mathf.Sin(i * EachAngle), 0, OuterRadius * Mathf.Cos(i * EachAngle));
@@ -224,16 +225,27 @@ public class Circle : MonoBehaviour
         meshCollider.sharedMesh = mesh;
 
     }
+  
     [ContextMenu("focetest")]
-    public void test2()
+    public void Drop()
     {
+
         StartCoroutine(PlayDropAnim());
     }
     IEnumerator PlayDropAnim()
     {
-        rig.isKinematic = false;
-        rig.AddForce(MiddleLine * 10, ForceMode.Impulse);
-        yield return new WaitForSeconds(1f);
+        transform.SetParent(null);
+        MiddleLine = Quaternion.Euler(0, RealAngle / 2, 0) * transform.forward;
+        Debug.DrawRay(transform.position, MiddleLine, Color.red, 3f);
+       
+        for(int i=0;i<50;i++)
+        {
+            transform.position += new Vector3(MiddleLine.x * drop_x, drop_y, MiddleLine.z * drop_x);
+            Debug.Log(i);
+
+            yield return deltaTime;
+        }
+        
         gameObject.SetActive(false);
 
     }

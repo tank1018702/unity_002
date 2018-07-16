@@ -26,6 +26,7 @@ public class TestMesh2 : MonoBehaviour
 
     int[] a;
 
+   
     void Start ()
     {
         meshFilter = transform.GetComponent<MeshFilter>();
@@ -37,10 +38,7 @@ public class TestMesh2 : MonoBehaviour
     }
 	
 	
-	void Update ()
-    {
-		
-	}
+	
 
     void SingleOne()
     {
@@ -180,6 +178,7 @@ public class TestMesh2 : MonoBehaviour
 
 
     }
+    
     IEnumerator test()
     {
         //int j = 0;

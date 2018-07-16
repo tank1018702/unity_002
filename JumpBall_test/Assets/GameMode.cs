@@ -72,7 +72,7 @@ public class GameMode : MonoBehaviour
             var circle = GetNextCircle();
             //每次得到新的圆环时改变高度
             circle.transform.position = new Vector3(0, lowestCircleY - gap);
-            circle.GenerateCircleByLevel();
+            circle.GenerateCircleByLevel(2.3f);
             lowestCircleY = circle.transform.position.y;
             
         }

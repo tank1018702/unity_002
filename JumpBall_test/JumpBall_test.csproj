@@ -244,6 +244,7 @@
     <Compile Include="Assets\Ball.cs" />
     <Compile Include="Assets\ChaseBallCam.cs" />
     <Compile Include="Assets\Circle.cs" />
+    <Compile Include="Assets\CircleList.cs" />
     <Compile Include="Assets\CopyData.cs" />
     <Compile Include="Assets\CubeInfo.cs" />
     <Compile Include="Assets\GameMode.cs" />

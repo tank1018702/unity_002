@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224571253608810466}
+  - component: {fileID: 114734247641691772}
   m_Layer: 5
   m_Name: GameOver
   m_TagString: Untagged
@@ -431,6 +432,22 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114734247641691772
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1577934461066954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23000c528b5c5444787243e9bdbb79b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabList: {fileID: 0}
+  Root: {fileID: 0}
+  gap: 8
+  GameOverUI: {fileID: 0}
+  prefabNumber: {fileID: 0}
 --- !u!114 &114804536895959252
 MonoBehaviour:
   m_ObjectHideFlags: 1

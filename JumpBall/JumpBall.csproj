@@ -253,6 +253,7 @@
     <Compile Include="Assets\BouncingBall.cs" />
     <Compile Include="Assets\ChaseBallCam.cs" />
     <Compile Include="Assets\Circle.cs" />
+    <Compile Include="Assets\CircleList.cs" />
     <Compile Include="Assets\GameMode.cs" />
     <Compile Include="Assets\InputLogic.cs" />
     <Compile Include="Assets\nu Assets\Easy Decal\Demo\Scripts\AdvancedBulletHoles.cs" />
